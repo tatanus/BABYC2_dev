@@ -1,6 +1,5 @@
 import paramiko
 import socket
-import select
 import threading
 import sys
 
@@ -96,7 +95,7 @@ def main():
         listener.bind((server_address, server_port))
         listener.listen(100)
     except:
-        print(f"[!] Bind Error for SSH Server using {server_address}:{server_socket.getsockname()[1]}")
+        print(f"[!] Bind Error for SSH Server using {server_address}")
         sys.exit(1)
 
     print(f"Listening for connections on {server_address}:{server_port}")
@@ -105,28 +104,6 @@ def main():
         client_socket, addr = listener.accept()
         print(f"SSH connection from {addr}")
         client_handler(client_socket, username, password, HOST_KEY)
-
-        transport = None
-        try:
-            # Create a Transport object and start the server
-            transport = paramiko.Transport(client_socket)
-            transport.add_server_key(HOST_KEY)
-            server = SSHServer()
-            transport.start_server(server=server)
-
-            # Accept a channel
-            channel = transport.accept(20)
-            if channel is None:
-                print("No channel")
-                continue
-
-            print("Authenticated and channel opened!")
-            cmd_loop(channel)
-        except Exception as e:
-            print(f"Exception: {e}")
-        finally:
-            if transport:
-                transport.close()
 
 if __name__ == "__main__":
     main()
