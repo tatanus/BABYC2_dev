@@ -3,7 +3,7 @@ import subprocess
 import sys
 
 DEFAULT_HOST = "127.0.0.1"
-DEFAULT_PORT = 4001
+DEFAULT_PORT = 9999
 DEFAULT_USERNAME = "user"
 DEFAULT_PASSWORD = "password"
 
